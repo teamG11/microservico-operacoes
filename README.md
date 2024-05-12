@@ -1,3 +1,8 @@
 # microservico-producao
-- Responsável por operacionalizar o processo de produção do pedido, acompanhando a fila de pedidos (visão da cozinha), atualização de status de cada passo do pedido.
-- Responsável por operacionalizar o processo de pedidos, registrando os pedidos, retornando as informações necessárias para montar um pedido, listandos os pedidos registrados e em processo de produção (visão de cliente).
+
+Responsável por
+    - acompanhar a fila de pedidos (visão da cozinha)
+    - atualizar de status de cada pedido
+    - listar os pedidos registrados e em produção (visão de cliente)
+    - operacionalizar o processo de pedidos
+    - registrar os pedidos, retornando as informações para montar um pedido
