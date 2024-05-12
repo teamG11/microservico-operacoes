@@ -7,6 +7,7 @@ export const errorMiddleware = (
   error: ZodError | ApiError | Error,
   _r: Request,
   response: Response,
+  // eslint-disable-next-line
   _n: NextFunction
 ) => {
   if (error instanceof ZodError) {
