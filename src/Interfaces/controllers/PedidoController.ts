@@ -32,11 +32,7 @@ class PedidoController {
 
       return response.status(201).json(pedido);
     } catch (error) {
-      if (error instanceof Error) {
-        return response.status(400).send(error.message);
-      }
-
-      return response.status(500).send();
+      next(error);
     }
   }
 
@@ -70,11 +66,7 @@ class PedidoController {
 
       return response.status(201).json(pedido);
     } catch (error) {
-      if (error instanceof Error) {
-        return response.status(400).send(error.message);
-      }
-
-      return response.status(500).send();
+      next(error);
     }
   }
 
@@ -109,11 +101,7 @@ class PedidoController {
 
       return response.status(201).json(pedido);
     } catch (error) {
-      if (error instanceof Error) {
-        return response.status(400).send(error.message);
-      }
-
-      return response.status(500).send();
+      next(error);
     }
   }
 
@@ -148,11 +136,7 @@ class PedidoController {
         return response.status(200).json(pedidoAtualizado);
       }
     } catch (error) {
-      if (error instanceof Error) {
-        return response.status(400).send(error.message);
-      }
-
-      return response.status(500).send();
+      next(error);
     }
   }
 
@@ -173,11 +157,7 @@ class PedidoController {
         return response.status(404).send("Pedido não encontrado.");
       }
     } catch (error) {
-      if (error instanceof Error) {
-        return response.status(400).send(error.message);
-      }
-
-      return response.status(500).send();
+      next(error);
     }
   }
 
@@ -202,11 +182,7 @@ class PedidoController {
         return response.status(404).send("Pedido não encontrado.");
       }
     } catch (error) {
-      if (error instanceof Error) {
-        return response.status(400).send(error.message);
-      }
-
-      return response.status(500).send();
+      next(error);
     }
   }
 
@@ -222,11 +198,7 @@ class PedidoController {
         await buscarTodosPedidosNaoFinalizados.executarAsync();
       return response.status(200).json({ pedidos: pedidos });
     } catch (error) {
-      if (error instanceof Error) {
-        return response.status(400).send(error.message);
-      }
-
-      return response.status(500).send();
+      next(error);
     }
   }
 }
