@@ -8,24 +8,30 @@ import { z } from "zod";
 import { IPedidoRepository } from "../Repositories/IPedidoRepository";
 import { AtualizarPedidoUseCaseFactory } from "@/Application/use-cases-factories/pedidos/AtualizarPedidoUseCaseFactory";
 import { AdicionarItemPedidoUseCaseFactory } from "@/Application/use-cases-factories/pedidos/AdicionarItemPedidoUseCaseFactory";
-import { IProdutoRepository } from "../Repositories/IProdutoRepository";
+import ClienteGateway from "../Gataways/ClienteGateway";
+import { ICadastrosMicroserviceApi } from "../ExternalServices/Microservices/ICadastrosMicroserviceApi";
+import ProdutoGateway from "../Gataways/ProdutoGateway";
+import PedidoGateway from "../Gataways/PedidoGateway";
 
 class PedidoController {
-    constructor(private pedidoRepository: IPedidoRepository, private produtoRepository: IProdutoRepository) { }
+  constructor(private pedidoRepository: IPedidoRepository, private cadastrosMicroserviceApi: ICadastrosMicroserviceApi) { }
 
   async criar(request: Request, response: Response, next: NextFunction) {
     try {
       const dados = request.body;
 
       const createBodySchema = z.object({
-        id_cliente: z.number(),
+        cpf: z.string().min(11).max(11),
       });
 
-      const { id_cliente } = createBodySchema.parse(dados);
+      const { cpf } = createBodySchema.parse(dados);
 
-      const criaPedido = CriaPedidoUseCaseFactory(this.pedidoRepository);
+      const clienteGateway = new ClienteGateway(this.cadastrosMicroserviceApi);
+      const pedidoGateway = new PedidoGateway(this.pedidoRepository);
 
-      const pedido = await criaPedido.executarAsync(id_cliente);
+      const criaPedido = CriaPedidoUseCaseFactory(pedidoGateway, clienteGateway);
+
+      const pedido = await criaPedido.executarAsync(cpf);
 
       return response.status(201).json(pedido);
     } catch (error) {
@@ -121,7 +127,9 @@ class PedidoController {
       const { id_pedido, id_produto, quantidade } =
         createBodySchema.parse(dados);
 
-      const adcionaItemFactory = AdicionarItemPedidoUseCaseFactory(this.pedidoRepository, this.produtoRepository);
+      const produtoGateway = new ProdutoGateway(this.cadastrosMicroserviceApi);
+
+      const adcionaItemFactory = AdicionarItemPedidoUseCaseFactory(this.pedidoRepository, produtoGateway);
       const pedidoAtualizado = await adcionaItemFactory.executarAsync({
         id_pedido,
         id_produto,

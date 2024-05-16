@@ -260,7 +260,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id_cliente\":1\n}",
+							"raw": "{\n    \"cpf\":\"00011122233\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

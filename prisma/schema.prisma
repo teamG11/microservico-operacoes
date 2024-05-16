@@ -11,36 +11,9 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Cliente {
-    id         Int      @id @default(autoincrement())
-    nome       String
-    sobrenome  String?
-    cpf        String   @unique
-    created_at DateTime @default(now())
-    updated_at DateTime @default(now()) @updatedAt
-    pedidos    Pedido[]
-
-    @@map("cliente")
-}
-
-model Produto {
-    id          Int           @id @default(autoincrement())
-    nome        String
-    descricao   String
-    categoria   String
-    valor       Int
-    disponivel  Boolean       @default(true)
-    created_at  DateTime      @default(now())
-    updated_at  DateTime      @default(now()) @updatedAt
-    pedidoItens PedidoItens[]
-
-    @@map("produto")
-}
-
 model Pedido {
     id               Int           @id @default(autoincrement())
     id_cliente       Int
-    cliente          Cliente       @relation(fields: [id_cliente], references: [id], onDelete: NoAction, onUpdate: NoAction)
     valor_final      Int?
     tipo_pagamento   String?
     status           String?
@@ -56,7 +29,6 @@ model PedidoItens {
     id_pedido      Int
     id_produto     Int
     pedido         Pedido   @relation(fields: [id_pedido], references: [id], onDelete: NoAction, onUpdate: NoAction)
-    produto        Produto  @relation(fields: [id_produto], references: [id], onDelete: NoAction, onUpdate: NoAction)
     quantidade     Int
     valor_unitario Int
     created_at     DateTime @default(now())

@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { PedidoController } from "../../../Interfaces/controllers/PedidoController";
 import PedidoRepository from "@/Infrastructure/drivers/Repositories/PedidoRepository";
-import ProdutoRepository from "@/Infrastructure/drivers/Repositories/ProdutoRepository";
+import CadastrosMicroserviceApi from "@/Infrastructure/drivers/ExternalServices/Microservices/CadastrosMicroserviceApi";
 
 const pedidoRouter = Router();
 
-const pedidoController = new PedidoController(new PedidoRepository(), new ProdutoRepository());
+const pedidoController = new PedidoController(new PedidoRepository(), new CadastrosMicroserviceApi());
 
 pedidoRouter.post("", (req, res, next) => { pedidoController.criar(req, res, next); });
 pedidoRouter.post("/item", (req, res, next) => { pedidoController.adicionarItem(req, res, next); });

@@ -1,21 +1,15 @@
 import { Cliente } from "@/Domain/Entities/Cliente";
-import { IClienteRepository } from "../Repositories/IClienteRepository";
+import { ICadastrosMicroserviceApi } from "../ExternalServices/Microservices/ICadastrosMicroserviceApi";
 
 export interface IClienteGateway {
-    saveAsync(cliente: Cliente): Promise<Cliente>;
     findByCPFAsync(cpf: string): Promise<Cliente | null>;
 }
 
 export default class ClienteGateway implements IClienteGateway {
 
-    constructor(private clienteRepository: IClienteRepository) { }
-    
-    async saveAsync(data: Cliente): Promise<Cliente> {
-
-        return this.clienteRepository.saveAsync(data);
-    }
+    constructor(private cadastrosMicroserviceApi: ICadastrosMicroserviceApi) { }
 
     async findByCPFAsync(cpf: string): Promise<Cliente | null> {
-        return this.clienteRepository.findByCPFAsync(cpf);
+        return this.cadastrosMicroserviceApi.findClienteAsync(cpf);
     }
 }

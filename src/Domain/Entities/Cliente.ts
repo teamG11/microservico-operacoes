@@ -1,10 +1,11 @@
 export class Cliente {
-	id?: number;
+	id: number;
 	nome: string;
 	sobrenome: string | null;
 	cpf: string;
 
-	constructor({ cpf, nome, sobrenome }: typeof Cliente.prototype) {
+	constructor({ id, cpf, nome, sobrenome }: typeof Cliente.prototype) {
+		this.id = id
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.cpf = cpf;
