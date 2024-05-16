@@ -3,7 +3,7 @@ import { BuscarTodosPedidosNaoFinalizadosUseCaseFactory } from "@/Application/us
 import { CriaPedidoUseCaseFactory } from "@/Application/use-cases-factories/pedidos/CriaPedidoUseCaseFactory";
 import { StatusPedido } from "@/Domain/Enums/StatusPedido";
 import { TipoPagamento } from "@/Domain/Enums/TipoPagamento";
-import { NextFunction,Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { z } from "zod";
 import { IPedidoRepository } from "../Repositories/IPedidoRepository";
 import { AtualizarPedidoUseCaseFactory } from "@/Application/use-cases-factories/pedidos/AtualizarPedidoUseCaseFactory";
@@ -35,11 +35,7 @@ class PedidoController {
 
       return response.status(201).json(pedido);
     } catch (error) {
-      if (error instanceof Error) {
-        return response.status(400).send(error.message);
-      }
-
-      return response.status(500).send();
+      next(error);
     }
   }
 
@@ -61,7 +57,9 @@ class PedidoController {
       const { valor_final, tipo_pagamento, status } =
         createBodySchema.parse(dados);
 
-      const atualizarPedidoFactory = AtualizarPedidoUseCaseFactory(this.pedidoRepository);
+      const atualizarPedidoFactory = AtualizarPedidoUseCaseFactory(
+        this.pedidoRepository
+      );
       const pedido = await atualizarPedidoFactory.executarAsync(
         pedidoId,
         valor_final ?? null,
@@ -71,15 +69,15 @@ class PedidoController {
 
       return response.status(201).json(pedido);
     } catch (error) {
-      if (error instanceof Error) {
-        return response.status(400).send(error.message);
-      }
-
-      return response.status(500).send();
+      next(error);
     }
   }
 
-  async atualizarStatusPedido(request: Request, response: Response, next: NextFunction) {
+  async atualizarStatusPedido(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
     try {
       const paramsSchema = z.object({
         pedidoId: z.string().transform((value) => Number(value)),
@@ -106,15 +104,15 @@ class PedidoController {
 
       return response.status(201).json(pedido);
     } catch (error) {
-      if (error instanceof Error) {
-        return response.status(400).send(error.message);
-      }
-
-      return response.status(500).send();
+      next(error);
     }
   }
 
-  async adicionarItem(request: Request, response: Response, next: NextFunction) {
+  async adicionarItem(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
     try {
       const dados = request.body;
 
@@ -140,11 +138,7 @@ class PedidoController {
         return response.status(200).json(pedidoAtualizado);
       }
     } catch (error) {
-      if (error instanceof Error) {
-        return response.status(400).send(error.message);
-      }
-
-      return response.status(500).send();
+      next(error);
     }
   }
 
@@ -165,15 +159,15 @@ class PedidoController {
         return response.status(404).send("Pedido não encontrado.");
       }
     } catch (error) {
-      if (error instanceof Error) {
-        return response.status(400).send(error.message);
-      }
-
-      return response.status(500).send();
+      next(error);
     }
   }
 
-  async buscarStatusPagamento(request: Request, response: Response, next: NextFunction) {
+  async buscarStatusPagamento(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
     try {
       const paramsSchema = z.object({
         pedidoId: z.string().transform((value) => Number(value)),
@@ -190,26 +184,23 @@ class PedidoController {
         return response.status(404).send("Pedido não encontrado.");
       }
     } catch (error) {
-      if (error instanceof Error) {
-        return response.status(400).send(error.message);
-      }
-
-      return response.status(500).send();
+      next(error);
     }
   }
 
-  async buscarTodosPedidosNaoFinalizados(request: Request, response: Response, next: NextFunction) {
+  async buscarTodosPedidosNaoFinalizados(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
     try {
-      const buscarTodosPedidosNaoFinalizados = BuscarTodosPedidosNaoFinalizadosUseCaseFactory(this.pedidoRepository);
-      const {pedidos} = await buscarTodosPedidosNaoFinalizados.executarAsync();
+      const buscarTodosPedidosNaoFinalizados =
+        BuscarTodosPedidosNaoFinalizadosUseCaseFactory(this.pedidoRepository);
+      const { pedidos } =
+        await buscarTodosPedidosNaoFinalizados.executarAsync();
       return response.status(200).json({ pedidos: pedidos });
-
     } catch (error) {
-      if (error instanceof Error) {
-        return response.status(400).send(error.message);
-      }
-
-      return response.status(500).send();
+      next(error);
     }
   }
 }

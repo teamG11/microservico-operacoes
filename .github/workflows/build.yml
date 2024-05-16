@@ -1,0 +1,106 @@
+name: 'Build'
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout commit
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '18.x'
+
+      - name: Cache NPM
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run linter
+        run: npm run lint
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout commit
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '18.x'
+
+      - name: Cache NPM
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm run test
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout commit
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '18.x'
+
+      - name: Cache NPM
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run build
+        run: npm run build
+
+  sonarcloud:
+    name: sonar_cloud
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  
+      - name: Install dependencies
+        run: npm install
+      - name: Test and coverage
+        run: npm run test:coverage
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Quality gateway
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        timeout-minutes: 5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
