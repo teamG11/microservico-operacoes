@@ -8,13 +8,16 @@ import { z } from "zod";
 import { IPedidoRepository } from "../Repositories/IPedidoRepository";
 import { AtualizarPedidoUseCaseFactory } from "@/Application/use-cases-factories/pedidos/AtualizarPedidoUseCaseFactory";
 import { AdicionarItemPedidoUseCaseFactory } from "@/Application/use-cases-factories/pedidos/AdicionarItemPedidoUseCaseFactory";
-import ClienteGateway from "../Gataways/ClienteGateway";
 import { ICadastrosMicroserviceApi } from "../ExternalServices/Microservices/ICadastrosMicroserviceApi";
-import ProdutoGateway from "../Gataways/ProdutoGateway";
 import PedidoGateway from "../Gataways/PedidoGateway";
+import ClienteGateway from "../Gataways/ClienteGateway";
+import ProdutoGateway from "../Gataways/ProdutoGateway";
 
 class PedidoController {
-  constructor(private pedidoRepository: IPedidoRepository, private cadastrosMicroserviceApi: ICadastrosMicroserviceApi) { }
+  constructor(
+    private pedidoRepository: IPedidoRepository,
+    private cadastrosMicroserviceApi: ICadastrosMicroserviceApi
+  ) {}
 
   async criar(request: Request, response: Response, next: NextFunction) {
     try {
@@ -29,7 +32,10 @@ class PedidoController {
       const clienteGateway = new ClienteGateway(this.cadastrosMicroserviceApi);
       const pedidoGateway = new PedidoGateway(this.pedidoRepository);
 
-      const criaPedido = CriaPedidoUseCaseFactory(pedidoGateway, clienteGateway);
+      const criaPedido = CriaPedidoUseCaseFactory(
+        pedidoGateway,
+        clienteGateway
+      );
 
       const pedido = await criaPedido.executarAsync(cpf);
 
@@ -127,7 +133,10 @@ class PedidoController {
 
       const produtoGateway = new ProdutoGateway(this.cadastrosMicroserviceApi);
 
-      const adcionaItemFactory = AdicionarItemPedidoUseCaseFactory(this.pedidoRepository, produtoGateway);
+      const adcionaItemFactory = AdicionarItemPedidoUseCaseFactory(
+        this.pedidoRepository,
+        produtoGateway
+      );
       const pedidoAtualizado = await adcionaItemFactory.executarAsync({
         id_pedido,
         id_produto,

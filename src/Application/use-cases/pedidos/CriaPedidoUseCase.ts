@@ -4,10 +4,12 @@ import { IClienteGateway } from "@/Interfaces/Gataways/ClienteGateway";
 import { IPedidoGateway } from "@/Interfaces/Gataways/PedidoGateway";
 
 export class CriaPedidoUseCase {
-  constructor(private pedidoGateway: IPedidoGateway, private clienteGateway: IClienteGateway) {}
+  constructor(
+    private pedidoGateway: IPedidoGateway,
+    private clienteGateway: IClienteGateway
+  ) {}
 
   async executarAsync(cpf: string): Promise<Pedido> {
-    
     const cliente = await this.clienteGateway.findByCPFAsync(cpf);
 
     if (!cliente) {

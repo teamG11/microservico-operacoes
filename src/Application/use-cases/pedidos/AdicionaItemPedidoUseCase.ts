@@ -1,5 +1,4 @@
 import { Pedido } from "@/Domain/Entities/Pedido";
-import { PedidoItens } from "@/Domain/Entities/PedidoItens";
 import { IPedidoGateway } from "@/Interfaces/Gataways/PedidoGateway";
 import { IProdutoGateway } from "@/Interfaces/Gataways/ProdutoGateway";
 
@@ -20,13 +19,13 @@ export class AdicionaItemPedidoUseCase {
     id_produto,
     quantidade,
   }: AdicionaItemPedidoDados): Promise<Pedido> {
-    const addPedidoItem = new PedidoItens({
-      id_pedido,
-      id_produto,
-      quantidade,
-    });
+    // const addPedidoItem = new PedidoItens({
+    //   id_pedido,
+    //   id_produto,
+    //   quantidade,
+    // });
 
-    await this.pedidoGateway.addItemAsync(addPedidoItem);
+    // await this.pedidoGateway.addItemAsync(addPedidoItem);
 
     const pedido = await this.pedidoGateway.findByIdAsync(id_pedido);
 

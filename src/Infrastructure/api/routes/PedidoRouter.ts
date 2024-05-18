@@ -5,7 +5,10 @@ import CadastrosMicroserviceApi from "@/Infrastructure/drivers/ExternalServices/
 
 const pedidoRouter = Router();
 
-const pedidoController = new PedidoController(new PedidoRepository(), new CadastrosMicroserviceApi());
+const pedidoController = new PedidoController(
+  new PedidoRepository(),
+  new CadastrosMicroserviceApi()
+);
 
 pedidoRouter.post("", (req, res, next) => {
   void pedidoController.criar(req, res, next);

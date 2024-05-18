@@ -1,4 +1,4 @@
-# microservico-producao
+# microservico-operacoes
 
 Responsável por
     - acompanhar a fila de pedidos (visão da cozinha)
