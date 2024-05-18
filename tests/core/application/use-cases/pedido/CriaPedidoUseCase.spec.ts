@@ -1,4 +1,4 @@
-import { PedidoTestRepository } from "@/Infrastructure/drivers/Repositories/TestsRepositories/PedidoTestRepository";
+import { PedidoTestRepository } from "@/Interfaces/ExternalServices/Microservices/TestsRepositories/PedidoTestRepository";
 import { CriaPedidoUseCase } from "@/Application/use-cases/pedidos/CriaPedidoUseCase";
 import { beforeEach, describe, expect, it } from "vitest";
 import PedidoGateway from "@/Interfaces/Gataways/PedidoGateway";
@@ -33,12 +33,7 @@ describe("CriaPedido use case", () => {
   });
 
   it("Não deve permitir cadastrar pedido para cliente nao existente", async () => {
-    const pedido = {
-      nome: "John",
-      cpf: "111111111111",
-    };
-
-    await expect(useCase.executarAsync(pedido.cpf)).rejects.toThrow(
+    await expect(useCase.executarAsync("11111111111")).rejects.toThrow(
       "Cliente não encontrado"
     );
   });

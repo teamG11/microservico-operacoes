@@ -8,6 +8,7 @@ export class PedidoTestRepository implements IPedidoRepository {
 
   async createAsync(data: Pedido) {
     const pedido: Pedido = {
+      id: data.id,
       id_cliente: data.id_cliente,
       valor_final: data.valor_final,
       tipo_pagamento: data.tipo_pagamento,
