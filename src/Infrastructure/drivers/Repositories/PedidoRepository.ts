@@ -1,5 +1,4 @@
 import { Pedido as PedidoDomain } from "@/Domain/Entities/Pedido";
-import { PedidoItens as PedidoItensDomain } from "@/Domain/Entities/PedidoItens";
 import { IPedidoRepository } from "@/Interfaces/Repositories/IPedidoRepository";
 import { prisma } from "@/Infrastructure/lib/prisma";
 
@@ -43,36 +42,36 @@ export default class PedidoRepository implements IPedidoRepository {
     });
   }
 
-  async addItemAsync(data: PedidoItensDomain): Promise<PedidoDomain> {
-    const { id_pedido, id_produto, quantidade } = data;
+  // async addItemAsync(data: PedidoItensDomain): Promise<PedidoDomain> {
+  //   const { id_pedido, id_produto, quantidade } = data;
 
-    const existePedido = await prisma.pedido.findUnique({
-      where: { id: id_pedido },
-    });
+  //   const existePedido = await prisma.pedido.findUnique({
+  //     where: { id: id_pedido },
+  //   });
 
-    if (!existePedido) {
-      throw new Error(`Pedido com ID ${id_pedido} não encontrado.`);
-    }
+  //   if (!existePedido) {
+  //     throw new Error(`Pedido com ID ${id_pedido} não encontrado.`);
+  //   }
 
-    const existeProduto = await prisma.produto.findUnique({
-      where: { id: id_produto },
-    });
+  //   const existeProduto = await prisma.produto.findUnique({
+  //     where: { id: id_produto },
+  //   });
 
-    if (!existeProduto) {
-      throw new Error(`Produto com ID ${id_produto} não encontrado.`);
-    }
+  //   if (!existeProduto) {
+  //     throw new Error(`Produto com ID ${id_produto} não encontrado.`);
+  //   }
 
-    await prisma.pedidoItens.create({
-      data: {
-        id_pedido,
-        id_produto,
-        quantidade,
-        valor_unitario: existeProduto.valor,
-      },
-    });
+  //   await prisma.pedidoItens.create({
+  //     data: {
+  //       id_pedido,
+  //       id_produto,
+  //       quantidade,
+  //       valor_unitario: existeProduto.valor,
+  //     },
+  //   });
 
-    return existePedido;
-  }
+  //   return existePedido;
+  // }
 
   async findAllNaoFinalizadosAsync(): Promise<PedidoDomain[]> {
     const pedido = await prisma.pedido.findMany({
