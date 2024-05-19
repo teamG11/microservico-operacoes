@@ -10,7 +10,8 @@ const requests = {
   get: (url: string) => axiosInstance.get(url).then(responseBody),
   post: (url: string, body: null) =>
     axiosInstance.post(url, body).then(responseBody),
-  put: (url: string, body: null) => axiosInstance.put(url, body).then(responseBody),
+  put: (url: string, body: null) =>
+    axiosInstance.put(url, body).then(responseBody),
   delete: (url: string) => axiosInstance.delete(url).then(responseBody),
 };
 

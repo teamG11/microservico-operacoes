@@ -2,19 +2,19 @@ import { PedidoTestRepository } from "@/Interfaces/ExternalServices/Microservice
 import { beforeEach, describe, expect, it } from "vitest";
 import PedidoGateway from "@/Interfaces/Gataways/PedidoGateway";
 import { Pedido } from "@/Domain/Entities/Pedido";
-import { AtualizarStatusPedidoUseCase } from "@/Application/use-cases/pedidos/AtualizarStatusPedidoUseCase";
+import { BuscaTodosPedidosNaoFinalizadosUseCase } from "@/Application/use-cases/pedidos/BuscaTodosPedidosNaoFinalizadosUseCase";
 
-let useCase: AtualizarStatusPedidoUseCase;
+let useCase: BuscaTodosPedidosNaoFinalizadosUseCase;
 let pedidoGateway: PedidoGateway;
 
 describe("CriaPedido use case", () => {
   beforeEach(() => {
     const pedidoRepository = new PedidoTestRepository();
     pedidoGateway = new PedidoGateway(pedidoRepository);
-    useCase = new AtualizarStatusPedidoUseCase(pedidoGateway);
+    useCase = new BuscaTodosPedidosNaoFinalizadosUseCase(pedidoGateway);
   });
 
-  it("Deve permitir atualizar status do pedido", async () => {
+  it("Deve permitir buscar pedidos nao finalizados", async () => {
     const pedido: Pedido = {
       id: 1,
       id_cliente: 1,
@@ -24,14 +24,7 @@ describe("CriaPedido use case", () => {
       status_pagamento: "",
     };
     await pedidoGateway.createAsync(pedido);
-
-    const pedidoRetornado = await useCase.executarAsync(1, "Em preparacao");
-    expect(pedidoRetornado).toBeDefined;
-  });
-
-  it("Não deve permitir atualizar status do pedido para pedido nao existente", async () => {
-    await expect(useCase.executarAsync(2, "Novo Status")).rejects.toThrow(
-      "Pedido com ID 2 não encontrado."
-    );
+    const { pedidos } = await useCase.executarAsync();
+    expect(pedidos).toBeDefined;
   });
 });

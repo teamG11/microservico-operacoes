@@ -8,7 +8,6 @@ const envSchema = z.object({
   MICROSERVICO_CADASTROS_URL: z.string().default("urlMicroservicoCadastros/"),
 });
 
-
 const _env = envSchema.safeParse(process.env);
 
 if (_env.success === false) {

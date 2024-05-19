@@ -142,7 +142,7 @@ class PedidoController {
         id_produto,
         quantidade,
       });
-      
+
       if (pedidoAtualizado) {
         return response.status(200).send(pedidoAtualizado);
       }
