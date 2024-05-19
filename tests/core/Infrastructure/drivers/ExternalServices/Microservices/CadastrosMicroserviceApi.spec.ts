@@ -20,8 +20,6 @@ describe("CadastrosMicroserviceApi", () => {
         const fakeProduto: Produto = { id: 1, nome: "Produto Teste", valor: 100, descricao: "descricao produto", categoria: "lanche", disponivel:true };
         mock.onGet(`${ env.MICROSERVICO_CADASTROS_URL }produto/1`).reply(200, fakeProduto);
         
-        console.log(env.MICROSERVICO_CADASTROS_URL);
-
         const produto = await api.findProdutoAsync(1);
         expect(produto).toEqual(fakeProduto);
     });

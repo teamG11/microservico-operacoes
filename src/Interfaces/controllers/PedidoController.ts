@@ -143,8 +143,7 @@ class PedidoController {
         id_produto,
         quantidade,
       });
-
-      console.log(pedidoAtualizado);
+      
       if (pedidoAtualizado) {
         return response.status(200).send(pedidoAtualizado);
       }
