@@ -29,7 +29,7 @@ describe("CriaPedido use case", () => {
   });
 
   it("Deve retornar erro ao buscar pedido nao cadastrado", async () => {
-    await expect(useCase.executarAsync(1)).rejects.toThrow(
+    await expect(useCase.executarAsync(2)).rejects.toThrow(
       "Pedido não encontrado"
     );
   });

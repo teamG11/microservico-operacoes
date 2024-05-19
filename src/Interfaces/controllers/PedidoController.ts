@@ -39,7 +39,7 @@ class PedidoController {
 
       const pedido = await criaPedido.executarAsync(cpf);
 
-      return response.status(201).json(pedido);
+      return response.status(201).send(pedido);
     } catch (error) {
       next(error);
     }
@@ -53,7 +53,6 @@ class PedidoController {
       const { pedidoId } = paramsSchema.parse(request.params);
 
       const dados = request.body;
-
       const createBodySchema = z.object({
         valor_final: z.number().optional(),
         tipo_pagamento: z.nativeEnum(TipoPagamento).optional(),
@@ -66,6 +65,7 @@ class PedidoController {
       const atualizarPedidoFactory = AtualizarPedidoUseCaseFactory(
         this.pedidoRepository
       );
+
       const pedido = await atualizarPedidoFactory.executarAsync(
         pedidoId,
         valor_final ?? null,
@@ -73,7 +73,7 @@ class PedidoController {
         status ?? null
       );
 
-      return response.status(201).json(pedido);
+      return response.status(201).send(pedido);
     } catch (error) {
       next(error);
     }
@@ -108,7 +108,7 @@ class PedidoController {
         status
       );
 
-      return response.status(201).json(pedido);
+      return response.status(201).send(pedido);
     } catch (error) {
       next(error);
     }
@@ -137,14 +137,16 @@ class PedidoController {
         this.pedidoRepository,
         produtoGateway
       );
+
       const pedidoAtualizado = await adcionaItemFactory.executarAsync({
         id_pedido,
         id_produto,
         quantidade,
       });
 
+      console.log(pedidoAtualizado);
       if (pedidoAtualizado) {
-        return response.status(200).json(pedidoAtualizado);
+        return response.status(200).send(pedidoAtualizado);
       }
     } catch (error) {
       next(error);

@@ -1,22 +1,17 @@
 import { Cliente } from "@/Domain/Entities/Cliente";
 import { Produto } from "@/Domain/Entities/Produto";
+import axiosInstance from "@/Infrastructure/config/axiosInstance";
 import { ICadastrosMicroserviceApi } from "@/Interfaces/ExternalServices/Microservices/ICadastrosMicroserviceApi";
-import axios, { AxiosResponse } from "axios";
-import { env } from "@/Infrastructure/env";
-
-const instance = axios.create({
-  baseURL: env.MICROSERVICO_CADASTROS_URL,
-  timeout: 15000,
-});
+import { AxiosResponse } from "axios";
 
 const responseBody = (response: AxiosResponse) => response.data;
 
 const requests = {
-  get: (url: string) => instance.get(url).then(responseBody),
+  get: (url: string) => axiosInstance.get(url).then(responseBody),
   post: (url: string, body: null) =>
-    instance.post(url, body).then(responseBody),
-  put: (url: string, body: null) => instance.put(url, body).then(responseBody),
-  delete: (url: string) => instance.delete(url).then(responseBody),
+    axiosInstance.post(url, body).then(responseBody),
+  put: (url: string, body: null) => axiosInstance.put(url, body).then(responseBody),
+  delete: (url: string) => axiosInstance.delete(url).then(responseBody),
 };
 
 export default class CadastrosMicroserviceApi

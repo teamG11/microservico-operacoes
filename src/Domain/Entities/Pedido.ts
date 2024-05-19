@@ -1,6 +1,5 @@
 export class Pedido {
   id?: number;
-
   id_cliente: number;
   valor_final: number | null;
   tipo_pagamento: string | null;
