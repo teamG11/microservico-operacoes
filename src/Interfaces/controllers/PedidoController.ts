@@ -36,7 +36,6 @@ class PedidoController {
         pedidoGateway,
         clienteGateway
       );
-
       const pedido = await criaPedido.executarAsync(cpf);
 
       return response.status(201).send(pedido);

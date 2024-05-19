@@ -46,6 +46,23 @@ describe("ClienteController", () => {
         );
     });
 
+    it("Deve retornar erro ao criar um pedido", async () => {
+        const mockRequest: Partial<Request> = {
+            body: { cpf: "12345678901" }
+        };
+
+        const mockResponse: Partial<Response> = {
+            status: vi.fn().mockReturnThis(),
+            send: vi.fn(),
+        };
+
+        const expectedError = new Error("Cliente não encontrado");
+        await pedidoController.criar(mockRequest as Request, mockResponse as Response, mockNext);
+
+        expect(mockNext).toHaveBeenCalledWith(expectedError);
+    });
+
+
     it("deve atualizar um pedido corretamente", async () => {
         const mockRequest: Partial<Request> = {
             params: { pedidoId: "1" },
@@ -93,6 +110,23 @@ describe("ClienteController", () => {
             })
         );
     });
+
+    it("Deve retornar erro ao atualizar um pedido", async () => {
+        const mockRequest: Partial<Request> = {
+            params: { pedidoId: "2" },
+            body: { status: "pronto" }
+        };
+
+        const mockResponse: Partial<Response> = {
+            status: vi.fn().mockReturnThis(),
+            send: vi.fn(),
+        };
+
+        await pedidoController.atualizarStatusPedido(mockRequest as Request, mockResponse as Response, mockNext);
+        const expectedError = new Error("Pedido com ID 2 não encontrado.");
+        expect(mockNext).toHaveBeenCalledWith(expectedError);
+    });
+
 
     it("deve adicionar um item ao pedido corretamente", async () => {
         const mockRequest: Partial<Request> = {
