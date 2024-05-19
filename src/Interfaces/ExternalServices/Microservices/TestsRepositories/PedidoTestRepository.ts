@@ -8,18 +8,17 @@ export class PedidoTestRepository implements IPedidoRepository {
 
   public novoPedido = new Pedido({
     id_cliente: 123,
-    valor_final: 500.00,
+    valor_final: 500.0,
     tipo_pagamento: "pix",
     status: "recebido",
-    status_pagamento: "aguardando"
+    status_pagamento: "aguardando",
   });
 
   public item = new PedidoItens({
     id_pedido: 1,
     id_produto: 101,
-    quantidade: 3
+    quantidade: 3,
   });
-
 
   async createAsync(data: Pedido) {
     const pedido: Pedido = {
@@ -38,7 +37,7 @@ export class PedidoTestRepository implements IPedidoRepository {
   async updateAsync(data: Pedido) {
     this.novoPedido.id = 1;
     this.pedidos.push(this.novoPedido);
-    
+
     const pedido = this.pedidos.find((pedido) => pedido.id === data.id);
 
     if (pedido) {
