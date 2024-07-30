@@ -1,20 +1,21 @@
-version: '3.9'
-
 services:
   app:
+    container_name: "lanchonete-operacores"
     build:
       context: .
       dockerfile: Dockerfile
-      target: development
+      target: development-operacoes
     volumes:
       - ./:/usr/src/app
     environment:
-      PORT: 7000
+      PORT: 7002
       NODE_ENV: dev
       DATABASE_URL: postgresql://postgres:postgres@db:5432/lanchonete?schema=public
     ports:
-      - 7000:7000
+      - 7002:7002
     command: sh -c "npx prisma migrate deploy && npm run dev"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - db
 
@@ -27,16 +28,20 @@ services:
       POSTGRES_DB: lanchonete
     ports:
       - 5432:5432
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   swagger-ui:
     image: swaggerapi/swagger-ui
-    container_name: "swagger-ui"
+    container_name: "swagger-ui-operacoes"
     ports:
-      - "8082:8080"
+      - "8082:8082"
     volumes:
       - ./tooling/swagger/swagger.json:/openapi.json
     environment:
       SWAGGER_JSON: /openapi.json
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 networks:
     default:

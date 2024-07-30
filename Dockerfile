@@ -1,6 +1,6 @@
 # development
 
-FROM node:18-alpine AS development
+FROM node:18-alpine AS development-operacoes
 
 WORKDIR /usr/src/app
 
@@ -23,7 +23,7 @@ COPY --chown=node:node package*.json ./
 
 COPY --chown=node:node prisma ./prisma/
 
-COPY --chown=node:node --from=development /usr/src/app/node_modules ./node_modules
+COPY --chown=node:node --from=development-operacoes /usr/src/app/node_modules ./node_modules
 
 COPY --chown=node:node . .
 
@@ -37,7 +37,7 @@ USER node
 
 # production
 
-FROM node:18-alpine AS production
+FROM node:18-alpine AS production-operacoes
 
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/build ./build
