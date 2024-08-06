@@ -12,6 +12,11 @@ services:
       NODE_ENV: dev
       DATABASE_URL: postgresql://postgres:postgres@db-operacoes:5432/lanchonete?schema=public
       MICROSERVICO_CADASTROS_URL: http://app-cadastros:7001
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_REGION: us-east-1
+      PEDIDO_QUEUE_URL: http://localstack:4566/000000000000/pedido-queue
+      PAGAMENTO_QUEUE_URL: http://localstack:4566/000000000000/pagamento-queue
     ports:
       - 7002:7002
     command: sh -c "npx prisma migrate deploy && npm run dev"
@@ -19,6 +24,17 @@ services:
       - "host.docker.internal:host-gateway"
     depends_on:
       - db-operacoes
+      - db
+      - localstack
+  
+  localstack:
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566"
+    environment:
+      SERVICES: sqs
+    volumes:
+      - ./tooling/sqs:/etc/localstack/init/ready.d/
 
   db-operacoes:
     image: postgres:latest

@@ -29,14 +29,15 @@ describe("CriaPedido use case", () => {
       1,
       2,
       "pix",
-      "Em preparacao"
+      "Em preparacao",
+      null
     );
     expect(pedidoRetornado).toBeDefined;
   });
 
   it("Não deve permitir atualizar pedido para pedido nao existente", async () => {
-    await expect(useCase.executarAsync(2, null, null, null)).rejects.toThrow(
-      "Pedido com ID 2 não encontrado."
-    );
+    await expect(
+      useCase.executarAsync(2, null, null, null, null)
+    ).rejects.toThrow("Pedido com ID 2 não encontrado.");
   });
 });

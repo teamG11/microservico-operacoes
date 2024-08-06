@@ -63,6 +63,7 @@ describe("PedidoRepository", () => {
         valor_final: pedidoData.valor_final,
         tipo_pagamento: pedidoData.tipo_pagamento,
         status: pedidoData.status,
+        status_pagamento: pedidoData.status_pagamento,
       },
     });
     expect(result).toEqual(pedidoData);
