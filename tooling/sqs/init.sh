@@ -29,7 +29,7 @@ create_queue "pagamento-queue"
 # aws configure set default.region us-east-1
 
 # enviar mensagem
-# aws --endpoint-url=http://localstack:4566 sqs send-message --queue-url http://localstack:4566/000000000000/pedido-queue --message-body '{"id": "1", "status": "em preparacao", "statusPagamento": "aguardando"}'
+# aws --endpoint-url=http://localstack:4566 sqs send-message --queue-url http://localstack:4566/000000000000/pedido-queue --message-body '{"id": "2", "status": "em preparacao", "statusPagamento": "aguardando"}'
 #
 # ler mensagem
 # aws sqs receive-message --queue-url http://localhost:4566/000000000000/pagamento-queue --endpoint-url http://localhost:4566

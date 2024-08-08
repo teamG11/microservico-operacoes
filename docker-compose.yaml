@@ -28,12 +28,16 @@ services:
   
   localstack:
     image: localstack/localstack:latest
+    expose:
+      - 4566
     ports:
-      - "4566:4566"
+      - 4566:4566
     environment:
       SERVICES: sqs
     volumes:
       - ./tooling/sqs:/etc/localstack/init/ready.d/
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   db-operacoes:
     image: postgres:latest
