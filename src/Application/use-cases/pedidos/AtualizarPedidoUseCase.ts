@@ -8,7 +8,8 @@ export class AtualizarPedidoUseCase {
     id: number,
     valorFinal: number | null,
     tipoPagamento: string | null,
-    status: string | null
+    status: string | null,
+    statusPagamento: string | null
   ): Promise<Pedido> {
     const existePedido = await this.pedidoGateway.findByIdAsync(id);
 
@@ -22,6 +23,10 @@ export class AtualizarPedidoUseCase {
 
     if (tipoPagamento != null) {
       existePedido.tipo_pagamento = tipoPagamento;
+    }
+
+    if (statusPagamento != null) {
+      existePedido.status_pagamento = statusPagamento;
     }
 
     if (status != null) {

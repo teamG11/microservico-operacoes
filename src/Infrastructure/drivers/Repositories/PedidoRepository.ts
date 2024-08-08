@@ -16,6 +16,7 @@ export default class PedidoRepository implements IPedidoRepository {
         valor_final: data.valor_final,
         tipo_pagamento: data.tipo_pagamento,
         status: data.status,
+        status_pagamento: data.status_pagamento,
       },
     });
 

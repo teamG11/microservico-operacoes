@@ -12,6 +12,8 @@ import { ICadastrosMicroserviceApi } from "../ExternalServices/Microservices/ICa
 import PedidoGateway from "../Gataways/PedidoGateway";
 import ClienteGateway from "../Gataways/ClienteGateway";
 import ProdutoGateway from "../Gataways/ProdutoGateway";
+import { StatusPagamento } from "@/Domain/Enums/StatusPagamento";
+import { sendPagamentoMessage } from "@/Infrastructure/service/queue/PagamentoQueue";
 
 class PedidoController {
   constructor(
@@ -69,7 +71,8 @@ class PedidoController {
         pedidoId,
         valor_final ?? null,
         tipo_pagamento ?? null,
-        status ?? null
+        status ?? null,
+        null
       );
 
       return response.status(201).send(pedido);
@@ -104,7 +107,8 @@ class PedidoController {
         pedidoId,
         null,
         null,
-        status
+        status,
+        null
       );
 
       return response.status(201).send(pedido);
@@ -211,6 +215,47 @@ class PedidoController {
     } catch (error) {
       next(error);
     }
+  }
+
+  async atualizarStatusPedidoQueue(
+    idReq: string,
+    statusReq: string,
+    statusPagamentoReq: string
+  ) {
+    const id: number = Number(idReq);
+    if (isNaN(id)) {
+      throw new Error("ID invalido");
+    }
+
+    const status: StatusPedido = statusReq as StatusPedido;
+    if (!Object.values(StatusPedido).includes(status)) {
+      throw new Error("Status invalido");
+    }
+
+    const statusPagamento: StatusPagamento =
+      statusPagamentoReq as StatusPagamento;
+    if (!Object.values(StatusPagamento).includes(statusPagamento)) {
+      throw new Error("Status Pagamento invalido");
+    }
+
+    const atualizarPedidoFactory = AtualizarPedidoUseCaseFactory(
+      this.pedidoRepository
+    );
+
+    const pedido = await atualizarPedidoFactory.executarAsync(
+      id,
+      null,
+      null,
+      status,
+      statusPagamento
+    );
+
+    if (statusPagamento == "aguardando") {
+      const valor: number = pedido.valor_final as number;
+      await sendPagamentoMessage(id, pedido.id_cliente, valor);
+    }
+
+    return;
   }
 }
 
