@@ -1,6 +1,6 @@
 services:
-  app:
-    container_name: "lanchonete-operacores"
+  app-operacoes:
+    container_name: "operacoes"
     build:
       context: .
       dockerfile: Dockerfile
@@ -10,16 +10,17 @@ services:
     environment:
       PORT: 7002
       NODE_ENV: dev
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/lanchonete?schema=public
+      DATABASE_URL: postgresql://postgres:postgres@db-operacoes:5432/lanchonete?schema=public
+      MICROSERVICO_CADASTROS_URL: http://app-cadastros:7001
     ports:
       - 7002:7002
     command: sh -c "npx prisma migrate deploy && npm run dev"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
-      - db
+      - db-operacoes
 
-  db:
+  db-operacoes:
     image: postgres:latest
     restart: always
     environment:
